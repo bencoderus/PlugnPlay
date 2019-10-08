@@ -9,7 +9,7 @@
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
-<script src="{{ asset('/vendor/admin/main.js') }}"></script>
+
 
 <!-- Fonts -->
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -55,13 +55,6 @@ document.getElementById('logout-form').submit();"> <em class="fas fa-toggle-off"
     @csrf
 </form>
 </body>
-
+@stack('script')
+<script src="{{ asset('/vendor/admin/main.js') }}"></script>
 </html>
-
-<script>
-$("#menu-toggle").click(function(e) {
-e.preventDefault();
-$("#wrapper").toggleClass("toggled");
-});
-
-</script>

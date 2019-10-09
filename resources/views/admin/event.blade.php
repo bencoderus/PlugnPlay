@@ -14,6 +14,7 @@ EVENTS
 </button>
 </span>
 <br><br>
+@if(count($events) > 0)
 <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
@@ -40,6 +41,9 @@ EVENTS
           @endforeach
         </tbody>
       </table>
+      @else
+<p class="h3">NO EVENT ADDED YET!</p>
+      @endif
 </div>
 </div>
 

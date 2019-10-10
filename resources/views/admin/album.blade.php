@@ -40,9 +40,9 @@ ALBUMS
           <td>{{$album->year}}</td>
           <td>{{$album->created_at->diffForHumans()}}</td>
             <td>
-    <button class="btn btn-danger btn-sm">
-<i class="fa fa-trash"></i> Delete
-    </button>
+                    <button onclick="delete({{$event->id}})" class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                                </button>
             </td>
           </tr>
           @endforeach

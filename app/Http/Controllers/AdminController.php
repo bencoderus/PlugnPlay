@@ -21,6 +21,12 @@ $albums = Album::orderBy('id', 'DESC')->get();
 return view('admin.album', compact('albums'));
     }
 
+    public function deletealbum(Request $request){
+        $event = Album::find($request->input('id'));
+        $event->delete();
+        return ['message'=>'success'];
+    }
+
     public function addalbum(Request $request){
         $this->validate($request, [
             'title'=>'required|exists:albums',
@@ -96,6 +102,11 @@ public function music(){
     return view('admin.music', compact('musics', 'albums'));
 }
 
+public function deletemusic(Request $request){
+    $event = Music::find($request->input('id'));
+    $event->delete();
+    return ['message'=>'success'];
+}
 
 public function addmusic(Request $request){
     $this->validate($request, [

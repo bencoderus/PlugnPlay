@@ -32,10 +32,10 @@ Admin Dashboard</title>
 <a href="#menu-toggle" class="btn" id="menu-toggle"><em class="fas fa-bars"></em></a>
 <ul class="nav nav-pills flex-column sidebar-nav">
 <li class="nav-item"><a class="nav-link {{Request::path()=="admin" ? 'active' : ''}}" href="/admin"><em class="fas fa-home"></em> Dashboard</a></li>
-<li class="nav-item"><a class="nav-link {{Request::path()=="project" ? 'active' : ''}}" href="/project/add"><em class="fas fa-music"></em> Musics</a></li>
-<li class="nav-item"><a class="nav-link {{Request::path()=="admin/forum" ? 'active' : ''}}" href="/post/add"><em class="fas fa-music"></em> Albums</a></li>
-<li class="nav-item"><a class="nav-link {{Request::path()=="admin/thread" ? 'active' : ''}}" href="/projects"><em class="fas fa-calendar"></em> Events</a></li>
-<li class="nav-item"><a class="nav-link {{Request::path()=="admin/post" ? 'active' : ''}}" href="/blog"><em class="fas fa-user"></em> Bio</a></li>
+<li class="nav-item"><a class="nav-link {{Request::path()=="admin/musics" ? 'active' : ''}}" href="/admin/musics"><em class="fas fa-music"></em> Musics</a></li>
+<li class="nav-item"><a class="nav-link {{Request::path()=="admin/albums" ? 'active' : ''}}" href="/admin/albums"><em class="fas fa-compact-disc"></em> Albums</a></li>
+<li class="nav-item"><a class="nav-link {{Request::path()=="admin/events" ? 'active' : ''}}" href="/admin/events"><em class="fas fa-calendar"></em> Events</a></li>
+<li class="nav-item"><a class="nav-link {{Request::path()=="admin/bio" ? 'active' : ''}}" href="/admin/settings"><em class="fas fa-cog"></em> Settings</a></li>
 <li class="nav-item">
 <a class="nav-link" href="{{ route('logout') }}"
 onclick="event.preventDefault();

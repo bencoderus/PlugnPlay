@@ -17,7 +17,9 @@ Route::get('/', 'PagesController@index');
 
 Route::group(['prefix'=>'admin'], function(){
 Route::get('musics', 'AdminController@music');
+Route::get('music/add', 'AdminController@music');
+Route::get('albums', 'AdminController@album');
 Route::get('events', 'AdminController@event');
 });
 
-Route::get('/dashboard', 'HomeController@index')->name('home');
+Route::get('/admin', 'HomeController@index')->name('home');

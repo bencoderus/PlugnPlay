@@ -18,3 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('event/add', 'AdminController@addevent')->name("addevent");
+Route::post('music/add', 'AdminController@addmusic')->name("addmusic");
+Route::post('album/add', 'AdminController@addalbum')->name("addalbum");
+Route::post('event/delete', 'AdminController@deleteevent')->name("deleteevent");

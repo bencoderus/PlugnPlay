@@ -1,4 +1,8 @@
 @extends('layouts.admin')
+@php
+$start = 2010;
+$end = date('Y');
+@endphp
 
 @section('content')
 {{-- <event>
@@ -6,7 +10,7 @@
 <div class="card shadow">
 <div class="card-body">
 <span class="h3">
-EVENTS
+MUSIC
 </span>
 <span class="float-right">
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventmodal">
@@ -14,28 +18,38 @@ EVENTS
 </button>
 </span>
 <br><br>
-@if(count($events) > 0)
+@if(count($musics) > 0)
 <div class="table-responsive">
 <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Location</th>
-            <th scope="col">Date</th>
+            <th scope="col">Song Title</th>
+            <th scope="col">Album</th>
+            <th scope="col">Artist</th>
+            <th scope="col">Year</th>
+            <th scope="col">Play</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-            @foreach($events as $event)
+            @foreach($musics as $music)
           <tr>
-            <th scope="row">{{$event->id}}</th>
-            <td>{{$event->title}}</td>
-            <td>{{$event->location}}</td>
-          <td>{{$event->date}} {{$event->time}}</td>
-            <td>
-    <button onclick="deleteevent({{$event->id}})" class="btn btn-danger btn-sm">
-<i class="fa fa-trash"></i>
+            <th scope="row">{{$music->id}}</th>
+            <td>{{$music->title}}</td>
+            <td>{{($music->album_id == 0) ? "Single" : $music->album->name}}</td>
+          <td>{{$music->artist}}</td>
+          <td>{{$music->year}}</td>
+        <td>
+                        <audio controls>
+                        <source src="{{asset('songs/'.$music->song)}}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                        </audio>
+
+        </td>
+          <td>
+    <button class="btn btn-danger btn-sm">
+<i class="fa fa-trash"></i> Delete
     </button>
             </td>
           </tr>
@@ -44,7 +58,7 @@ EVENTS
       </table>
     </div>
       @else
-<p class="h3">NO EVENT ADDED YET!</p>
+<p class="h3">NO MUSIC ADDED YET!</p>
       @endif
 </div>
 </div>
@@ -55,7 +69,7 @@ EVENTS
 <div class="modal-dialog modal-dialog-centered" role="document">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title" id="exampleModalLongTitle">ADD EVENT</h5>
+<h5 class="modal-title" id="exampleModalLongTitle">ADD MUSIC</h5>
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
@@ -67,40 +81,57 @@ EVENTS
 <form id="eventform">
 @csrf
 <div class="form-group">
-<label for="title">Event Title</label>
+<label for="title">Song Title</label>
 <input type="text" name="title" class="form-control" id="title" required>
 </div>
 <div class="form-group">
-<label for="location">Event Location</label>
-<input type="text" name="location" class="form-control" id="location" required>
-</div>
-
-<div class="form-group">
-<label for="title">Event Description</label>
+<label for="title">Song Description</label>
 <textarea name="content" id="content" class="form-control" rows="5" required></textarea>
 </div>
 
 <div class="form-group">
 <div class="row">
-<div class="col-8">
-<label for="title">Event Date</label>
-<input type="date" name="date" class="form-control" id="date" required>
+    <div class="col-md-6">
+            <label for="title">Song Year</label>
+            <select name="year" id="year" class="form-control" required>
+            @for($a= $start; $a <= $end; $a++)
+                <option value="{{$a}}">{{$a}}</option>
+            @endfor
+            </select>
+    </div>
+    <div class="col-md-6">
+            <div class="form-group">
+                    <label for="title">Select Album</label>
+                    <select name="album" id="album" class="form-control">
+                    <option value="0">Select Album</option>
+                    @foreach($albums as $album)
+                        <option value="{{$album->id}}">{{$album->name}}</option>
+                    @endforeach
+                    </select>
+                    <p><small class="text-muted">Leave blank if its' a single</small></p>
+                    </div>
 
+        </div>
 </div>
-<div class="col-4">
-<label for="title">Event Time</label>
-<input type="time" name="time" class="form-control" id="time" required>
 
-</div>
-</div>
-</div>
+
 
 <div class="form-group">
 
-<label for="image">Event Image</label>
+<label for="image">Song Image</label>
 <input type="file" name="image" id="image" required>
 <img src="#" alt="preview" id="previewimg" style="width: 20%;">
 </div>
+
+<hr>
+<div class="form-group">
+    <label for="image">Music File</label>
+    <input type="file" name="song" id="song" required>
+    <p><small class="text-muted">You can only add <b>.mp3</b> files</small></p>
+
+</div>
+
+
 
 </div>
 <div class="modal-footer">
@@ -138,7 +169,7 @@ $('#eventform').submit(function(e){
         var form = $("#eventform")[0];
 		var _data = new FormData(form);
 		$.ajax({
-			url: '{{url(route("addevent"))}}',
+			url: '{{url(route("addmusic"))}}',
 			data: _data,
 			enctype: 'multipart/form-data',
 			processData: false,
@@ -163,20 +194,6 @@ $('#msgs').append(msgs);
 			}
 		});
     });
-
-//delete event
-function deleteevent(id){
-if(confirm("Are you sure you want to delete")){
-axios.post('{{route('deleteevent')}}', {
-    id: id
-}).then((response)=>{
-toastr.success('Event Deleted!')
-location.reload();
-}).catch((error)=>{
-    toastr.error('Network Error!')
-})
-}
-}
 
 </script>
 

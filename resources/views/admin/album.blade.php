@@ -1,4 +1,8 @@
 @extends('layouts.admin')
+@php
+$start = 2010;
+$end = date('Y');
+@endphp
 
 @section('content')
 {{-- <event>
@@ -6,7 +10,7 @@
 <div class="card shadow">
 <div class="card-body">
 <span class="h3">
-EVENTS
+ALBUMS
 </span>
 <span class="float-right">
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventmodal">
@@ -14,28 +18,30 @@ EVENTS
 </button>
 </span>
 <br><br>
-@if(count($events) > 0)
+@if(count($albums) > 0)
 <div class="table-responsive">
 <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Location</th>
-            <th scope="col">Date</th>
+            <th scope="col">Album Name</th>
+            <th scope="col">Album Content</th>
+            <th scope="col">Album Year</th>
+            <th scope="col">Added</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-            @foreach($events as $event)
+            @foreach($albums as $album)
           <tr>
-            <th scope="row">{{$event->id}}</th>
-            <td>{{$event->title}}</td>
-            <td>{{$event->location}}</td>
-          <td>{{$event->date}} {{$event->time}}</td>
+            <th scope="row">{{$album->id}}</th>
+            <td>{{$album->name}}</td>
+            <td>{{$album->content}}</td>
+          <td>{{$album->year}}</td>
+          <td>{{$album->created_at->diffForHumans()}}</td>
             <td>
-    <button onclick="deleteevent({{$event->id}})" class="btn btn-danger btn-sm">
-<i class="fa fa-trash"></i>
+    <button class="btn btn-danger btn-sm">
+<i class="fa fa-trash"></i> Delete
     </button>
             </td>
           </tr>
@@ -44,7 +50,7 @@ EVENTS
       </table>
     </div>
       @else
-<p class="h3">NO EVENT ADDED YET!</p>
+<p class="h3">NO ALBUM ADDED YET!</p>
       @endif
 </div>
 </div>
@@ -55,7 +61,7 @@ EVENTS
 <div class="modal-dialog modal-dialog-centered" role="document">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title" id="exampleModalLongTitle">ADD EVENT</h5>
+<h5 class="modal-title" id="exampleModalLongTitle">ADD ALBUM</h5>
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
@@ -67,37 +73,27 @@ EVENTS
 <form id="eventform">
 @csrf
 <div class="form-group">
-<label for="title">Event Title</label>
+<label for="title">Album Title</label>
 <input type="text" name="title" class="form-control" id="title" required>
 </div>
 <div class="form-group">
-<label for="location">Event Location</label>
-<input type="text" name="location" class="form-control" id="location" required>
-</div>
-
-<div class="form-group">
-<label for="title">Event Description</label>
+<label for="title">Album Description</label>
 <textarea name="content" id="content" class="form-control" rows="5" required></textarea>
 </div>
 
 <div class="form-group">
-<div class="row">
-<div class="col-8">
-<label for="title">Event Date</label>
-<input type="date" name="date" class="form-control" id="date" required>
+<label for="title">Album Year</label>
+<select name="year" id="year" class="form-control">
+@for($a= $start; $a <= $end; $a++)
+    <option value="{{$a}}">{{$a}}</option>
+@endfor
+</select>
 
-</div>
-<div class="col-4">
-<label for="title">Event Time</label>
-<input type="time" name="time" class="form-control" id="time" required>
-
-</div>
-</div>
 </div>
 
 <div class="form-group">
 
-<label for="image">Event Image</label>
+<label for="image">Album art/image</label>
 <input type="file" name="image" id="image" required>
 <img src="#" alt="preview" id="previewimg" style="width: 20%;">
 </div>
@@ -138,7 +134,7 @@ $('#eventform').submit(function(e){
         var form = $("#eventform")[0];
 		var _data = new FormData(form);
 		$.ajax({
-			url: '{{url(route("addevent"))}}',
+			url: '{{url(route("addalbum"))}}',
 			data: _data,
 			enctype: 'multipart/form-data',
 			processData: false,
@@ -163,20 +159,6 @@ $('#msgs').append(msgs);
 			}
 		});
     });
-
-//delete event
-function deleteevent(id){
-if(confirm("Are you sure you want to delete")){
-axios.post('{{route('deleteevent')}}', {
-    id: id
-}).then((response)=>{
-toastr.success('Event Deleted!')
-location.reload();
-}).catch((error)=>{
-    toastr.error('Network Error!')
-})
-}
-}
 
 </script>
 

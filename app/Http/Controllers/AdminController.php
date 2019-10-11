@@ -7,7 +7,7 @@ use App\Event;
 use App\Album;
 use App\Music;
 use Illuminate\Support\Str;
-
+use App\User;
 class AdminController extends Controller
 {
     //
@@ -22,14 +22,14 @@ return view('admin.album', compact('albums'));
     }
 
     public function deletealbum(Request $request){
-        $event = Album::find($request->input('id'));
-        $event->delete();
+        $album = Album::find($request->input('id'));
+        $album->delete();
         return ['message'=>'success'];
     }
 
     public function addalbum(Request $request){
         $this->validate($request, [
-            'title'=>'required|exists:albums',
+            'name'=>'required|unique:albums',
             'content'=>'required',
             'year'=>'required',
             'image'=>'required|image|max:2000',
@@ -45,7 +45,7 @@ if($request->hasFile('image')){
     }
 
             $album = new Album;
-            $album->name = $request->input('title');
+            $album->name = $request->input('name');
             $album->content = $request->input('content');
             $album->year = $request->input('year');
             $album->image = $filename;
@@ -103,8 +103,8 @@ public function music(){
 }
 
 public function deletemusic(Request $request){
-    $event = Music::find($request->input('id'));
-    $event->delete();
+    $music = Music::find($request->input('id'));
+    $music->delete();
     return ['message'=>'success'];
 }
 
@@ -115,7 +115,7 @@ public function addmusic(Request $request){
     'album'=>'required',
     'year'=>'required',
     'content'=>'required',
-    'song'=>'required|min:1000',
+    'song'=>'required|min:1000|mimes:mp3,mpga',
     'image'=>'required|image|max:2000',
     ]);
 //Uploading music album art
@@ -149,7 +149,10 @@ if($request->hasFile('song')){
     return ['message'=>'success'];
 }
 
-
+public function user(){
+$users = User::all();
+return view('admin.user', compact('users'));
+}
 
 
 //end of class

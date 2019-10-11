@@ -40,7 +40,7 @@ ALBUMS
           <td>{{$album->year}}</td>
           <td>{{$album->created_at->diffForHumans()}}</td>
             <td>
-                    <button onclick="delete({{$event->id}})" class="btn btn-danger btn-sm">
+                    <button onclick="deletealbum({{$album->id}})" class="btn btn-danger btn-sm">
                             <i class="fa fa-trash"></i>
                                 </button>
             </td>
@@ -74,7 +74,7 @@ ALBUMS
 @csrf
 <div class="form-group">
 <label for="title">Album Title</label>
-<input type="text" name="title" class="form-control" id="title" required>
+<input type="text" name="name" class="form-control" id="name" required>
 </div>
 <div class="form-group">
 <label for="title">Album Description</label>
@@ -128,7 +128,7 @@ readURL(this);
 });
 
 $('#eventform').submit(function(e){
-
+$("#loading").show()
     e.preventDefault();
     $("#msgs").html("");
         var form = $("#eventform")[0];
@@ -141,6 +141,7 @@ $('#eventform').submit(function(e){
 			contentType:false,
 			type: 'POST',
 			success: function(data){
+                $("#loading").hide()
                 toastr.success("New Event added");
                 $('#eventform').trigger('reset');
                 $('#eventmodal').modal('hide')
@@ -149,16 +150,30 @@ $('#eventform').submit(function(e){
                 }, 1000)
             },
 			error: function(result){
+                $("#loading").hide()
 let errors = result.responseJSON.errors;
 console.log(errors);
 $.each(errors, function(key, value){
 let msgs = "<div class='alert alert-danger'>" +value +"</div>";
 $('#msgs').append(msgs);
 })
-   toastr.error('Unable to add event', 'An error occured!');
+   toastr.error('Unable to add album', 'An error occured!');
 			}
 		});
     });
+
+function deletealbum(id){
+if(confirm("Are you sure you want to delete this album?")){
+axios.post('{{route('deletealbum')}}', {
+    id: id
+}).then((response)=>{
+toastr.success('Album Deleted!')
+location.reload();
+}).catch((error)=>{
+    toastr.error('Network Error!')
+})
+}
+}
 
 </script>
 

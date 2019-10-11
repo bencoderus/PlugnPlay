@@ -55,6 +55,14 @@ document.getElementById('logout-form').submit();"> <em class="fas fa-toggle-off"
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
+
+<div id="loading" style="display:none;">
+    <div class="spinner"></div>
+    <br/>
+    Please wait...
+</div>
+
+
 </body>
 @stack('script')
 <script src="{{ asset('/vendor/admin/main.js') }}"></script>

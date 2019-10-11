@@ -132,8 +132,8 @@ readURL(this);
 });
 
 $('#eventform').submit(function(e){
-
     e.preventDefault();
+    $("#loading").show()
     $("#msgs").html("");
         var form = $("#eventform")[0];
 		var _data = new FormData(form);
@@ -145,6 +145,7 @@ $('#eventform').submit(function(e){
 			contentType:false,
 			type: 'POST',
 			success: function(data){
+                $("#loading").hide()
                 toastr.success("New Event added");
                 $('#eventform').trigger('reset');
                 $('#eventmodal').modal('hide')
@@ -153,6 +154,7 @@ $('#eventform').submit(function(e){
                 }, 1000)
             },
 			error: function(result){
+                $("#loading").hide()
 let errors = result.responseJSON.errors;
 console.log(errors);
 $.each(errors, function(key, value){

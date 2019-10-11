@@ -48,7 +48,7 @@ MUSIC
 
         </td>
           <td>
-                <button onclick="delete({{$event->id}})" class="btn btn-danger btn-sm">
+                <button onclick="deletemusic({{$music->id}})" class="btn btn-danger btn-sm">
                         <i class="fa fa-trash"></i>
                             </button>
             </td>
@@ -163,9 +163,9 @@ readURL(this);
 });
 
 $('#eventform').submit(function(e){
-
     e.preventDefault();
     $("#msgs").html("");
+    $("#loading").show()
         var form = $("#eventform")[0];
 		var _data = new FormData(form);
 		$.ajax({
@@ -176,6 +176,7 @@ $('#eventform').submit(function(e){
 			contentType:false,
 			type: 'POST',
 			success: function(data){
+                $("#loading").hide()
                 toastr.success("New Event added");
                 $('#eventform').trigger('reset');
                 $('#eventmodal').modal('hide')
@@ -184,17 +185,32 @@ $('#eventform').submit(function(e){
                 }, 1000)
             },
 			error: function(result){
+                $("#loading").hide()
 let errors = result.responseJSON.errors;
 console.log(errors);
 $.each(errors, function(key, value){
 let msgs = "<div class='alert alert-danger'>" +value +"</div>";
 $('#msgs').append(msgs);
 })
-   toastr.error('Unable to add event', 'An error occured!');
+   toastr.error('Unable to add music', 'An error occured!');
 			}
 		});
     });
 
+
+    //Delete Music
+    function deletemusic(id){
+if(confirm("Are you sure you want to delete this song?")){
+axios.post('{{route('deletemusic')}}', {
+    id: id
+}).then((response)=>{
+toastr.success('Music Deleted!')
+location.reload();
+}).catch((error)=>{
+    toastr.error('Network Error!')
+})
+}
+}
 </script>
 
 @endpush

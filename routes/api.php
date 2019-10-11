@@ -21,5 +21,5 @@ Route::post('event/add', 'AdminController@addevent')->name("addevent");
 Route::post('music/add', 'AdminController@addmusic')->name("addmusic");
 Route::post('album/add', 'AdminController@addalbum')->name("addalbum");
 Route::post('event/delete', 'AdminController@deleteevent')->name("deleteevent");
-Route::post('music/delete', 'AdminController@deleteevent')->name("deletemusic");
-Route::post('album/delete', 'AdminController@deleteevent')->name("deleteealbum");
+Route::post('music/delete', 'AdminController@deletemusic')->name("deletemusic");
+Route::post('album/delete', 'AdminController@deletealbum')->name("deletealbum");

@@ -28,6 +28,7 @@ Route::post('album/add', 'AdminController@addalbum')->name("addalbum");
 Route::post('album/delete', 'AdminController@deletealbum')->name("deletealbum");
 
 //Music
+Route::post('music/update', 'AdminController@editmusic')->name("editmusic");
 Route::post('music/add', 'AdminController@addmusic')->name("addmusic");
 Route::post('music/delete', 'AdminController@deletemusic')->name("deletemusic");
 

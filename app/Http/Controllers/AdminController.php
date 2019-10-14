@@ -44,7 +44,7 @@ $music->save();
             'image'=>'sometimes|image|max:2000',
             ]);
 
-//Uploading album file
+#Uploading album file
 if($request->hasFile('image')){
     $file = $request->file('image');
     $ext =$file->getClientOriginalExtension();
@@ -91,7 +91,7 @@ if($request->hasFile('image')){
             $album->save();
             return ['message'=>'success'];
     }
-    //End Album
+
 
     //Events
     public function event(){
@@ -99,13 +99,14 @@ if($request->hasFile('image')){
     return view('admin.event', compact('events'));
     }
 
+    //Delete Evenet
     public function deleteevent(Request $request){
         $event = Event::find($request->input('id'));
         $event->delete();
         return ['message'=>'success'];
     }
 
-
+//Edit Event
     public function editevent(Request $request){
         $this->validate($request, [
         'title'=>'required',
@@ -182,6 +183,55 @@ public function deletemusic(Request $request){
     return ['message'=>'success'];
 }
 
+//add music
+public function editmusic(Request $request){
+    $this->validate($request, [
+    'title'=>'required',
+    'song'=>'required',
+    'album'=>'required',
+    'year'=>'required',
+    'id' =>'required',
+    'content'=>'required',
+    'song'=>'sometimes|min:1000|mimes:mp3,mpga',
+    'image'=>'sometimes|image|max:2000',
+    ]);
+
+//Uploading music album art
+if($request->hasFile('image')){
+$file = $request->file('image');
+$ext =$file->getClientOriginalExtension();
+$img = 'art' .time() .'.' .$ext;
+$destination = public_path("images/albumart");
+$file->move($destination ,$img);
+}
+
+//Uploading music album art
+if($request->hasFile('song')){
+    $file = $request->file('song');
+    $ext =$file->getClientOriginalExtension();
+    $songname= Str::slug($request->input('title'));
+    $filename = $songname .'.' .$ext;
+    $destination = public_path("songs");
+    $file->move($destination ,$filename);
+    }
+    $music = Music::find($request->input('id'));
+    $music->title = $request->input('title');
+    $music->content = $request->input('content');
+    if($request->hasFile('image')){
+    $music->image = $img;
+    }
+    $music->artist = "Taliban";
+    if($request->hasFile('song')){
+    $music->song = $filename;
+    }
+    $music->year = $request->input('year');
+    $music->album_id = $request->input('album');
+    $music->save();
+    return ['message'=>'success'];
+}
+
+
+//add music
 public function addmusic(Request $request){
     $this->validate($request, [
     'title'=>'required',

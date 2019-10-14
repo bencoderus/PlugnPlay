@@ -24,8 +24,47 @@ return view('admin.album', compact('albums'));
     public function deletealbum(Request $request){
         $album = Album::find($request->input('id'));
         $album->delete();
+
+        //remove music in this category
+$music = Music::where('album_id', $request->input('id'))->get();
+foreach($music as $music)
+{
+$music->album_id = 0;
+$music->save();
+}
+
         return ['message'=>'success'];
     }
+
+    public function editalbum(Request $request){
+        $this->validate($request, [
+            'name'=>'required',
+            'content'=>'required',
+            'year'=>'required',
+            'image'=>'sometimes|image|max:2000',
+            ]);
+
+//Uploading album file
+if($request->hasFile('image')){
+    $file = $request->file('image');
+    $ext =$file->getClientOriginalExtension();
+    $filename = 'art' .time() .'.' .$ext;
+    $destination = public_path("images/albums");
+    $file->move($destination ,$filename);
+    }
+
+            $album = Album::find($request->input('id'));
+            $album->name = $request->input('name');
+            $album->content = $request->input('content');
+            $album->year = $request->input('year');
+            if($request->hasFile('image')){
+                $album->image = $filename;
+            }
+            $album->save();
+            return ['message'=>'success'];
+    }
+
+
 
     public function addalbum(Request $request){
         $this->validate($request, [
@@ -66,6 +105,41 @@ if($request->hasFile('image')){
         return ['message'=>'success'];
     }
 
+
+    public function editevent(Request $request){
+        $this->validate($request, [
+        'title'=>'required',
+        'id'=>'required',
+        'location'=>'required',
+        'content'=>'required',
+        'date'=>'required',
+        'time'=>'required',
+        'image'=>'sometimes|image|max:2000',
+        ]);
+    //Uploading event file
+    if($request->hasFile('image')){
+    $file = $request->file('image');
+    $ext =$file->getClientOriginalExtension();
+    $filename = 'event' .time() .'.' .$ext;
+    $destination = public_path("images/event");
+    $file->move($destination ,$filename);
+    }
+
+    $event = Event::find($request->input('id'));
+    $event->title = $request->input('title');
+    $event->location = $request->input('location');
+    $event->description = $request->input('content');
+    $event->date = $request->input('date');
+    $event->time = $request->input('time');
+    if($request->hasFile('image')){
+        $event->image = $filename;
+    }
+    $event->save();
+        }
+    //end events
+
+
+//Add event
     public function addevent(Request $request){
     $this->validate($request, [
     'title'=>'required',
@@ -80,7 +154,7 @@ if($request->hasFile('image')){
 $file = $request->file('image');
 $ext =$file->getClientOriginalExtension();
 $filename = 'event' .time() .'.' .$ext;
-$destination = public_path("images/albumart");
+$destination = public_path("images/event");
 $file->move($destination ,$filename);
 }
 

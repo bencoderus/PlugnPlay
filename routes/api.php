@@ -17,9 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//event
 Route::post('event/add', 'AdminController@addevent')->name("addevent");
-Route::post('music/add', 'AdminController@addmusic')->name("addmusic");
-Route::post('album/add', 'AdminController@addalbum')->name("addalbum");
+Route::post('event/update', 'AdminController@editevent')->name("editevent");
 Route::post('event/delete', 'AdminController@deleteevent')->name("deleteevent");
-Route::post('music/delete', 'AdminController@deletemusic')->name("deletemusic");
+
+//albums
+Route::post('album/update', 'AdminController@editalbum')->name("editalbum");
+Route::post('album/add', 'AdminController@addalbum')->name("addalbum");
 Route::post('album/delete', 'AdminController@deletealbum')->name("deletealbum");
+
+//Music
+Route::post('music/add', 'AdminController@addmusic')->name("addmusic");
+Route::post('music/delete', 'AdminController@deletemusic')->name("deletemusic");
+

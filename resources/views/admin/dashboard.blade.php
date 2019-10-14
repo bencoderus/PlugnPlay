@@ -1,13 +1,12 @@
 @extends('layouts.admin')
 
+@section('title')
+Dashboard
+@endsection
+
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-12">
-<div class="card">
-    <div class="card-body">
-<p class="h3 mb-4">
-MY DASHBOARD
-</p>
             <div class="row" id="explore">
                     <div class="col-xl-3 col-md-3 mb-3">
                       <div class="card text-white bg-primary o-hidden h-100">
@@ -78,6 +77,5 @@ MY DASHBOARD
 
     </div>
 
-</div>               </div>
 </div>
 @endsection

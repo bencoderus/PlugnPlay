@@ -4,16 +4,18 @@ $start = 2010;
 $end = date('Y');
 @endphp
 
+@section('title')
+Album
+@endsection
+
 @section('content')
-{{-- <event>
-</event> --}}
 <div class="card shadow">
 <div class="card-body">
 <span class="h3">
-ALBUMS
+ALL ALBUMS
 </span>
 <span class="float-right">
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventmodal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#albummodal">
 <i class="fa fa-plus"></i>
 </button>
 </span>
@@ -40,8 +42,10 @@ ALBUMS
           <td>{{$album->year}}</td>
           <td>{{$album->created_at->diffForHumans()}}</td>
             <td>
-                    <button onclick="deletealbum({{$album->id}})" class="btn btn-danger btn-sm">
-                            <i class="fa fa-trash"></i>
+                    <button onclick="editalbum({{$album}})" class="btn btn-primary btn-sm">
+                            Edit</button>
+                <button onclick="deletealbum({{$album->id}})" class="btn btn-danger btn-sm">
+                           Delete
                                 </button>
             </td>
           </tr>
@@ -55,9 +59,63 @@ ALBUMS
 </div>
 </div>
 
+<!--Edit modal-->
+<div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="modaltitle">ADD ALBUM</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        <div id="msgs" class="msgs">
 
-<!--Event modal-->
-<div class="modal fade" id="eventmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        </div>
+        <form id="editform">
+        @csrf
+        <div class="form-group">
+        <label for="title">Album Title</label>
+        <input type="text" name="name" class="form-control" id="editname" required>
+        </div>
+        <div class="form-group">
+        <label for="title">Album Description</label>
+        <textarea name="content" id="editcontent" class="form-control" rows="5" required></textarea>
+        </div>
+
+        <div class="form-group">
+        <label for="title">Album Year</label>
+        <select name="year" id="edityear" class="form-control">
+        @for($a= $start; $a <= $end; $a++)
+            <option value="{{$a}}">{{$a}}</option>
+        @endfor
+        </select>
+
+        </div>
+
+        <div class="form-group">
+
+        <label for="image">Album art/image</label>
+        <input type="file" name="image" id="editimage">
+        <img src="#" alt="preview" id="previewedit" style="width: 20%;">
+    </div>
+
+        </div>
+        <div class="modal-footer">
+                <input type="hidden" name="id" id="editid" hidden="editid">
+        <button type="button" class="btn btn-secondary" id="submit" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+        </form>
+        </div>
+        </div>
+        </div>
+        <!--end album modal-->
+
+
+<!--album modal-->
+<div class="modal fade" id="albummodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered" role="document">
 <div class="modal-content">
 <div class="modal-header">
@@ -70,7 +128,7 @@ ALBUMS
 <div id="msgs" class="msgs">
 
 </div>
-<form id="eventform">
+<form id="albumform">
 @csrf
 <div class="form-group">
 <label for="title">Album Title</label>
@@ -107,31 +165,91 @@ ALBUMS
 </div>
 </div>
 </div>
-<!--end event modal-->
+<!--end album modal-->
 
 
 @push('script')
 <script>
-function readURL(input) {
+
+function editalbum(album){
+    $('#modaltitle').text("Edit " +album.name +" Album")
+    $('#editname').val(album.name);
+    $('#editcontent').val(album.content);
+    $('#edityear').val(album.year);
+    $('#editid').val(album.id);
+
+    //Passing the image from db to preview
+    $("#previewedit").attr('src', "/images/albums/" +album.image)
+
+    //Lauch modal
+    $('#editmodal').modal('show')
+
+
+//edit form
+$('#editform').submit(function(e){
+$("#loading").show()
+    e.preventDefault();
+    $("#msgs").html("");
+        var form = $("#editform")[0];
+		var _data = new FormData(form);
+		$.ajax({
+			url: '{{url(route("editalbum"))}}',
+			data: _data,
+			enctype: 'multipart/form-data',
+			processData: false,
+			contentType:false,
+			type: 'POST',
+			success: function(data){
+                $("#loading").hide()
+                toastr.success("Changes Saved Successfully");
+                $('#editform').trigger('reset');
+                $('#editmodal').modal('hide')
+                setTimeout(()=>{
+                    location.reload();
+                }, 1000)
+            },
+			error: function(result){
+                $("#loading").hide()
+let errors = result.responseJSON.errors;
+console.log(errors);
+$.each(errors, function(key, value){
+let msgs = "<div class='alert alert-danger'>" +value +"</div>";
+$('#msgs').append(msgs);
+})
+   toastr.error('Unable to edit album', 'An error occured!');
+			}
+		});
+    });
+
+}
+
+
+function readURL(input, image) {
 if (input.files && input.files[0]) {
 var reader = new FileReader();
 
 reader.onload = function(e) {
-$('#previewimg').attr('src', e.target.result);
+    image.attr('src', e.target.result);
 }
 reader.readAsDataURL(input.files[0]);
 }
 }
 
 $("#image").change(function() {
-readURL(this);
+let preview = $("#previewimg")
+    readURL(this, preview);
 });
 
-$('#eventform').submit(function(e){
+$("#editimage").change(function() {
+let preview = $("#previewedit")
+    readURL(this, preview);
+});
+//add album
+$('#albumform').submit(function(e){
 $("#loading").show()
     e.preventDefault();
     $("#msgs").html("");
-        var form = $("#eventform")[0];
+        var form = $("#albumform")[0];
 		var _data = new FormData(form);
 		$.ajax({
 			url: '{{url(route("addalbum"))}}',
@@ -142,9 +260,9 @@ $("#loading").show()
 			type: 'POST',
 			success: function(data){
                 $("#loading").hide()
-                toastr.success("New Event added");
-                $('#eventform').trigger('reset');
-                $('#eventmodal').modal('hide')
+                toastr.success("New Album added");
+                $('#albumform').trigger('reset');
+                $('#albummodal').modal('hide')
                 setTimeout(()=>{
                     location.reload();
                 }, 1000)
@@ -161,7 +279,7 @@ $('#msgs').append(msgs);
 			}
 		});
     });
-
+//delete album
 function deletealbum(id){
 if(confirm("Are you sure you want to delete this album?")){
 axios.post('{{route('deletealbum')}}', {

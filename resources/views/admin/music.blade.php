@@ -4,6 +4,10 @@ $start = 2010;
 $end = date('Y');
 @endphp
 
+@section('title')
+Music
+@endsection
+
 @section('content')
 {{-- <event>
 </event> --}}

@@ -329,7 +329,7 @@ $('#eventform').submit(function(e){
 			type: 'POST',
 			success: function(data){
                 $("#loading").hide()
-                toastr.success("New Event added");
+                toastr.success("New Music added!");
                 $('#eventform').trigger('reset');
                 $('#eventmodal').modal('hide')
                 setTimeout(()=>{
@@ -353,12 +353,15 @@ $('#msgs').append(msgs);
     //Delete Music
     function deletemusic(id){
 if(confirm("Are you sure you want to delete this song?")){
+    $("#loading").show()
 axios.post('{{route('deletemusic')}}', {
     id: id
 }).then((response)=>{
+    $("#loading").hide()
 toastr.success('Music Deleted!')
 location.reload();
 }).catch((error)=>{
+    $("#loading").hide()
     toastr.error('Network Error!')
 })
 }

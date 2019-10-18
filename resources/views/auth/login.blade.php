@@ -9,46 +9,50 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
+    <script src="{{asset('js/app.js')}}"></script>
+      <!-- Styles -->
     <style>
     body,html{
     height:100%;
+    background: #212121 !important;
 }
     </style>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+        <div id="loading" style="display:none;">
+                <div class="spinner"></div>
+                <br/>
+                Please wait...
+            </div>
+
+
+
 <div class="container h-100">
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-md-5">
             <div class="card shadow">
-                <div class="card-body">
+                <div class="card-body p-4">
 
 
                     <div class="m-2 text-center">
-                            {{-- <span class="fa-stack text-success fa-3x">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fas fa-user text-white fa-stack-1x fa-inverse"></i>
-                                    </span> --}}
-                                    <p class="h3 font-weight-bold mt-2">LOGIN</p>
-                                </div>
-                    <br>
+                    <p class="h4 text-muted font-weight-bold mt-2">LOG IN</p>
+                    </div><br>
 
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" id="formlogin">
                         @csrf
 
                         <div class="form-group row">
 
                             <div class="col-md-12">
-                                <label for="Email">Email Address</label>
-                                <input id="email" placeholder="E-mail Address" type="email" class="form-control p-4 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+
+                                               <input id="email" placeholder="E-mail Address" type="email" class="form-control p-4 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+
+
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -60,10 +64,8 @@
 
                         <div class="form-group row">
                             <div class="col-md-12">
-                                    <label for="Email">Password</label>
                                 <input id="password"  placeholder="Password" type="password" class="form-control p-4 @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
+                                  @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -74,9 +76,9 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-12">
-                                <button type="submit" class="btn p-3 mt-2 shadow btn-block btn-dark">
-                                    {{ __('Login') }}
-                                </button>
+                                <button type="submit" class="btn p-2 mt-2 shadow btn-block btn-success">
+                                    {{ __('Login to your account ') }}
+                                </button><br><br>
                             </div>
                         </div>
                     </form>
@@ -85,7 +87,7 @@
             <div class="row justify-content-center">
 
                     @if (Route::has('password.request'))
-                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                    <a class="btn btn-link text-white" href="{{ route('password.request') }}">
                         {{ __('Forgot Your Password?') }}
                     </a>
                 @endif
@@ -96,5 +98,43 @@
     </div>
 
 </div>
+
+
+<script>
+$("#formlogin").submit(function(e){
+e.preventDefault();
+$('#loading').show();
+let data = $("#formlogin").serialize()
+axios.post('{{route('apilogin')}}', data).then((response)=>{
+    $('#loading').hide();
+if(response.data.status == "success"){
+
+    Toast.fire({
+  type: 'success',
+  title: 'Login Successful'
+})
+setTimeout(()=>{
+location.assign('/admin');
+}, 1000)
+}
+else
+{
+Toast.fire({
+  type: 'error',
+  title: response.data.message,
+})
+}
+}).catch((error)=>{
+    $('#loading').hide();
+    Toast.fire({
+  type: 'error',
+  title: 'Network Failed'
+})
+
+})
+})
+
+    </script>
+
 </body>
 </html>

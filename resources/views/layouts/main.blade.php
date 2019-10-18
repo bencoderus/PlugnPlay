@@ -82,13 +82,13 @@
     <!-- ##### Header Area End ##### -->
 
     <!-- ##### Breadcumb Area Start ##### -->
-    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb.jpg);">
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
         <div class="bradcumbContent">
-            <p>Hello there, I am</p>
-            <h2>TALIBSMALLS</h2>
+            <p>Spanking New</p>
+            <h2>LATEST MUSIC</h2>
         </div>
     </section>
-    <section class="contact-area section-padding-100-0">
+    <section class="contact-area">
         <div class="container">
 
             @yield('content')
@@ -101,13 +101,13 @@
 <!-- ##### Contact Area End ##### -->
 
 <!-- ##### Footer Area Start ##### -->
-<footer class="footer-area">
+<footer class="footer-area section-padding-100">
     <div class="container">
         <div class="row d-flex flex-wrap align-items-center">
             <div class="col-12 col-md-6">
             <a href="#" class="text-white h4">{{env('APP_NAME')}}</a>
                 <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
 

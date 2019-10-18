@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.11.2",
+        "sweetalert2": "^8.18.4",
         "vform": "^1.0.1"
     }
 }

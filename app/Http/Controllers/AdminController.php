@@ -179,6 +179,11 @@ public function music(){
 
 public function deletemusic(Request $request){
     $music = Music::find($request->input('id'));
+//Deleting the old music
+    $oldimage = public_path('images/albumart/'.$music->image);
+    unlink($oldimage);
+    $oldmusic = public_path('songs/'.$music->song);
+    unlink($oldmusic);
     $music->delete();
     return ['message'=>'success'];
 }
@@ -195,9 +200,13 @@ public function editmusic(Request $request){
     'song'=>'sometimes|min:1000|mimes:mp3,mpga',
     'image'=>'sometimes|image|max:2000',
     ]);
+ $music = Music::find($request->input('id'));
+
 
 //Uploading music album art
 if($request->hasFile('image')){
+$oldimage = public_path('images/albumart/'.$music->image);
+unlink($oldimage);
 $file = $request->file('image');
 $ext =$file->getClientOriginalExtension();
 $img = 'art' .time() .'.' .$ext;
@@ -207,6 +216,8 @@ $file->move($destination ,$img);
 
 //Uploading music album art
 if($request->hasFile('song')){
+    $oldimage = public_path('songs/'.$music->song);
+    unlink($oldimage);
     $file = $request->file('song');
     $ext =$file->getClientOriginalExtension();
     $songname= Str::slug($request->input('title'));
@@ -214,7 +225,7 @@ if($request->hasFile('song')){
     $destination = public_path("songs");
     $file->move($destination ,$filename);
     }
-    $music = Music::find($request->input('id'));
+
     $music->title = $request->input('title');
     $music->content = $request->input('content');
     if($request->hasFile('image')){

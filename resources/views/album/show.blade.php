@@ -21,13 +21,16 @@
                         </div>
                 </div>
                 <div class="col-md-8 p-4">
-
+                    @if(count($album->music) > 0)
                     @foreach($album->music as $music)
                 <p><span class="text-muted"><b>{{$loop->iteration}}.</b> <a href="{{url('/music/'.$music->slug)}}">{{$music->title}}</a> </span> <span class="float-right albummusic">        <audio preload="auto" controls>
                 <source src="{{url('/songs/'.$music->song)}}">
                                 </audio>
           </span></p><hr/>
                     @endforeach
+                    @else
+                    <h4>NO TRACK ADDED YET</h4>
+                    @endif
 
             </div>
 

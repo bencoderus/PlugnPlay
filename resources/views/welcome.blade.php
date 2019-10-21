@@ -1,8 +1,5 @@
 @extends('layouts.main')
-@php
-$musicpath = asset('images/albumart/');
 
-@endphp
 
 @section('content')
 
@@ -63,19 +60,19 @@ $musicpath = asset('images/albumart/');
             <div class="row">
                 <!-- Single Album Area -->
       @foreach($albums as $album)
-                <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-                    <div class="single-album-area wow fadeInUp" data-wow-delay="200ms">
-                        <div class="album-thumb">
-                        <img src="images/thumbnails/{{$album->image}}" alt="">
-                        </div>
-                        <div class="album-info">
-                            <a href="{{url('/album/'.$album->slug)}}">
-                            <h5>{{Str::limit($album->name, 20)}}</h5>
-                            </a>
-                        <p>{{$album->year}}</p>
-                        </div>
-                    </div>
+      <div class="col-6 col-sm-6 col-md-4  wow fadeInUp" data-wow-delay="200ms">
+        <a href="{{url('/album/'.$album->slug)}}">
+             <div class="shadow single-album-area">
+                <div class="album-thumb">
+                <img src="{{url('/images/thumbnails/'.$album->image)}}" alt="">
                 </div>
+                <div class="album-info p-4">
+                        <h5>{{Str::limit($album->name, 20)}}</h5>
+                    <p>{{$album->year}}</p>
+                </div>
+            </div>
+        </a>
+        </div>
 @endforeach
 
             </div>
@@ -83,7 +80,7 @@ $musicpath = asset('images/albumart/');
             <div class="row">
                 <div class="col-12">
                     <div class="load-more-btn text-center wow fadeInUp" data-wow-delay="300ms">
-                    <a href="{{route('album')}}" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>
+                    <a href="{{url('/albums')}}" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -96,10 +93,10 @@ $musicpath = asset('images/albumart/');
 @if(count($musics) > 0)
     <!-- ##### Featured Artist Area Start ##### -->
     <section class="mb-4 featured-artist-area section-padding-50 bg-img bg-overlay bg-fixed" style="background-image: url(img/bg-img/breadcumb2.jpg);">
-        <div class="container">
+        <div class="container wow bounceInDown" data-wow-delay="200ms">
             <div class="row align-items-end">
                 <div class="col-12 col-md-5 col-lg-4">
-                    <div class="featured-artist-thumb">
+                    <div class="featured-artist-thumb text-center">
                     <img src="images/thumbnails/{{$latest->image}}" alt="">
                     </div>
                 </div>
@@ -107,10 +104,10 @@ $musicpath = asset('images/albumart/');
                     <div class="featured-artist-content">
                         <!-- Section Heading -->
                         <div class="section-heading white text-left mb-30">
-                            <p>See what’s new</p>
-                            <h2>Buy What’s New</h2>
+                            <p>Featured Music</p>
+                        <h2>{{$latest->title}}</h2>
                         </div>
-                    <p>{{$music->content}}</p>
+                    <p>{{$latest->content}}</p>
                         <div class="song-play-area">
                             <div class="song-name">
                             <p>{{$latest->title}}</p>
@@ -126,6 +123,56 @@ $musicpath = asset('images/albumart/');
     </section>
     @endif
     <!-- ##### Featured Artist Area End ##### -->
+
+    <!-- ##### Contact Area Start ##### -->
+    <section class="contact-area section-padding-0-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading">
+                        <p>Lets' work together</p>
+                        <h2>Get In Touch</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <!-- Contact Form Area -->
+                    <div class="contact-form-area  wow fadeInUp" data-wow-delay="200ms">
+                        <form id="contactform">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name" placeholder="Name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" placeholder="E-mail" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="subject" placeholder="Subject" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button class="btn oneMusic-btn mt-30" type="submit">Send <i class="fa fa-angle-double-right"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Contact Area End ##### -->
 
 
 @endsection

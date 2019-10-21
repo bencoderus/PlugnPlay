@@ -15,35 +15,18 @@
 Auth::routes();
 Route::get('/', 'PagesController@index');
 Route::post('login', 'Auth\LoginController@apilogin')->name('apilogin');
-Route::group(['prefix'=>'admin'], function(){
+Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
 Route::get('musics', 'AdminController@music')->name('music');
 Route::get('albums', 'AdminController@album')->name('album');
 Route::get('events', 'AdminController@event')->name('event');
 Route::get('users', 'AdminController@user');
 });
 
-Route::get('/admin', 'HomeController@index')->name('home');
-Route::get('music', 'PagesController@music');
+Route::get('/admin', 'AdminController@index')->middleware('auth')->name('home');
+Route::get('/musics', 'PagesController@music')->name('songs');
+Route::get('music/{slug}', 'PagesController@showmusic');
 
+Route::get('/albums', 'PagesController@album')->name('albums');
+Route::get('album/{id}', 'PagesController@showalbum');
 
-Route::get('/api', function(){
-//  Initiate curl
-$ch = curl_init();
-// Will return the response, if false it print the response
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// Set the url
-curl_setopt($ch, CURLOPT_URL, 'http://numbersapi.com/5/trivia');
-// Execute
-$result=curl_exec($ch);
-
-if(curl_errno($ch))
-{
-die("Could not connect to api");
-}
-else{
-    return $result;
-}
-// Closing
-curl_close($ch);
-
-});
+Route::get('events', 'PagesController@events');

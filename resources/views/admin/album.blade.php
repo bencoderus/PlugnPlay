@@ -38,7 +38,7 @@ ALL ALBUMS
           <tr>
             <th scope="row">{{$album->id}}</th>
             <td>{{$album->name}}</td>
-            <td>{{$album->content}}</td>
+            <td>{{Str::limit($album->content, 20)}}</td>
           <td>{{$album->year}}</td>
           <td>{{$album->created_at->diffForHumans()}}</td>
             <td>

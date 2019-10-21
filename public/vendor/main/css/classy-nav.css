@@ -237,7 +237,7 @@ img {
     cursor: pointer; }
     .classy-navbar-toggler .navbarToggler span {
       position: relative;
-      background-color: #858585;
+      background-color: #fff;
       border-radius: 3px;
       display: block;
       height: 3px;

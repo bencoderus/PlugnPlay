@@ -61,11 +61,11 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="albums-store.html">Albums</a></li>
-                                     <li><a href="event.html">Events</a></li>
-                                    <li><a href="blog.html">News</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                <li><a href="{{url('/')}}">Home</a></li>
+                                    <li><a href="{{url('/albums')}}">Albums</a></li>
+                                     <li><a href="{{url('/events')}}">Events</a></li>
+                                    <li><a href="{{url('/musics')}}">Musics</a></li>
+                                    <li><a href="{{url('/contact')}}">Contact</a></li>
                                 </ul>
 
                                 <!-- Login/Register & Cart Button -->
@@ -82,7 +82,7 @@
     <!-- ##### Header Area End ##### -->
 
     <!-- ##### Breadcumb Area Start ##### -->
-    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+<section class="breadcumb-area bg-img bg-overlay" style="background-image: url({{asset('img/bg-img/breadcumb3.jpg')}});">
         <div class="bradcumbContent">
             <p>Spanking New</p>
             <h2>LATEST MUSIC</h2>
@@ -114,11 +114,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             <div class="col-12 col-md-6">
                 <div class="footer-nav">
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Albums</a></li>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Contact</a></li>
+                    <li><a href="{{url('/')}}">Home</a></li>
+                        <li><a href="{{url('/albums')}}">Albums</a></li>
+                        <li><a href="{{url('/events')}}">Events</a></li>
+                        <li><a href="{{url('/musics')}}">Musics</a></li>
+                        <li><a href="{{url('/contact')}}">Contact</a></li>
                     </ul>
                 </div>
             </div>

@@ -24,9 +24,9 @@ $musicpath = asset('images/albumart/');
                         @if(count($musics) > 0)
                         @foreach($musics as $music)
                         <div class="single-album wow fadeInUp" data-wow-delay="200ms">
-                        <img src="images/albumart/{{$music->image}}" alt="">
+                        <img src="images/thumbnails/{{$music->image}}" alt="">
                             <div class="album-info">
-                                <a href="#">
+                            <a href="{{url('/music/'.$music->slug)}}">
                                 <h6>{{Str::limit($music->title, 20)}}</h6>
                                 </a>
                             <p>{{$music->artist}}</p>
@@ -50,7 +50,7 @@ $musicpath = asset('images/albumart/');
 @if(count($albums) > 0)
     <!-- ##### Buy Now Area Start ##### -->
     <section class="oneMusic-buy-now-area has-fluid bg-gray section-padding-50">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="section-heading style-2">
@@ -63,13 +63,13 @@ $musicpath = asset('images/albumart/');
             <div class="row">
                 <!-- Single Album Area -->
       @foreach($albums as $album)
-                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div class="col-6 col-sm-6 col-md-4 col-lg-3">
                     <div class="single-album-area wow fadeInUp" data-wow-delay="200ms">
                         <div class="album-thumb">
-                        <img src="images/albums/{{$album->image}}" alt="">
+                        <img src="images/thumbnails/{{$album->image}}" alt="">
                         </div>
                         <div class="album-info">
-                            <a href="#">
+                            <a href="{{url('/album/'.$album->slug)}}">
                             <h5>{{Str::limit($album->name, 20)}}</h5>
                             </a>
                         <p>{{$album->year}}</p>
@@ -95,12 +95,12 @@ $musicpath = asset('images/albumart/');
 
 @if(count($musics) > 0)
     <!-- ##### Featured Artist Area Start ##### -->
-    <section class="mb-4 featured-artist-area section-padding-50 bg-img bg-overlay bg-fixed" style="background-image: url(img/bg-img/bg-4.jpg);">
+    <section class="mb-4 featured-artist-area section-padding-50 bg-img bg-overlay bg-fixed" style="background-image: url(img/bg-img/breadcumb2.jpg);">
         <div class="container">
             <div class="row align-items-end">
                 <div class="col-12 col-md-5 col-lg-4">
                     <div class="featured-artist-thumb">
-                    <img src="images/albumart/{{$latest->image}}" alt="">
+                    <img src="images/thumbnails/{{$latest->image}}" alt="">
                     </div>
                 </div>
                 <div class="col-12 col-md-7 col-lg-8">

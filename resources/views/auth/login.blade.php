@@ -114,7 +114,7 @@ if(response.data.status == "success"){
   title: 'Login Successful'
 })
 setTimeout(()=>{
-location.assign('/admin');
+location.assign('{{url('/admin')}}');
 }, 1000)
 }
 else

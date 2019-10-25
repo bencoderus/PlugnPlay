@@ -6,10 +6,10 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these  tags -->
 
     <!-- Title -->
-<title>@yield('title') {{env('APP_NAME')}}</title>
+<title>{{env('APP_NAME')}} - @yield('title')</title>
     @toastr_css
     @jquery
     @toastr_js
@@ -32,6 +32,21 @@
             <div></div>
         </div>
     </div>
+
+    <div id="loading" style="display:none;">
+            <div class="spinner"></div>
+            <br/>
+            Please wait...
+        </div>
+
+    <div class="loader d-flex align-items-center justify-content-center">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
 
     <!-- ##### Header Area Start ##### -->
     <header class="header-area">
@@ -85,7 +100,7 @@
 <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({{asset('img/bg-img/breadcumb3.jpg')}});">
         <div class="bradcumbContent">
             <p>Spanking New</p>
-            <h2>LATEST MUSIC</h2>
+            <h2>@yield('title')</h2>
         </div>
     </section>
     <section class="contact-area">
@@ -107,7 +122,7 @@
             <div class="col-12 col-md-6">
             <a href="#" class="text-white h4">{{env('APP_NAME')}}</a>
                 <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
 

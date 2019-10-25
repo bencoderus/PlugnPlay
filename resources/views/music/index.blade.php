@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-
+@section('title')
+Latest Musics
+@endsection
 
 @section('content')
 

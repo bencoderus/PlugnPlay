@@ -28,5 +28,6 @@ Route::get('music/{slug}', 'PagesController@showmusic');
 
 Route::get('/albums', 'PagesController@album')->name('albums');
 Route::get('album/{id}', 'PagesController@showalbum');
-
+Route::get('/contact', 'PagesController@contact');
 Route::get('events', 'PagesController@events');
+

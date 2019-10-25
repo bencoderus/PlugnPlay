@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('title')
+Latest Event
+@endsection
+
 @section('content')
 
 <section class="events-area section-padding-100">

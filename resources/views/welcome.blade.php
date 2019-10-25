@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+@section('title')
+Latest Music
+@endsection
 
 @section('content')
 
@@ -20,15 +23,16 @@
                     <div class="albums-slideshow owl-carousel">
                         @if(count($musics) > 0)
                         @foreach($musics as $music)
+                        <a href="{{url('/music/'.$music->slug)}}">
                         <div class="single-album wow fadeInUp" data-wow-delay="200ms">
                         <img src="images/thumbnails/{{$music->image}}" alt="">
                             <div class="album-info">
-                            <a href="{{url('/music/'.$music->slug)}}">
+
                                 <h6>{{Str::limit($music->title, 20)}}</h6>
-                                </a>
+
                             <p>{{$music->artist}}</p>
                             </div>
-                        </div>
+                        </div></a>
                         @endforeach
 
                         @endif
@@ -124,6 +128,68 @@
     @endif
     <!-- ##### Featured Artist Area End ##### -->
 
+
+ <!-- ##### Newsletter & Testimonials Area Start ##### -->
+ <section class="newsletter-testimonials-area">
+    <div class="container">
+        <div class="row">
+
+            <!-- Newsletter Area -->
+            <div class="col-12 col-lg-6">
+                <div class="newsletter-area mb-100">
+                    <div class="section-heading text-left mb-50">
+                        <p>See what’s new</p>
+                        <h2>Subscribe to newsletter</h2>
+                    </div>
+                    <div class="newsletter-form">
+                        <form action="#" id="subscribeform">
+                            <input type="email" name="email" id="email" placeholder="Your E-mail">
+                            <button type="submit" class="btn oneMusic-btn">Subscribe <i class="fa fa-angle-double-right"></i></button>
+                        </form><br><br>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials Area -->
+            <div class="col-12 col-lg-6">
+                <div class="testimonials-area mb-100 bg-img bg-overlay" style="background-image: url(img/bg-img/bg-3.jpg);">
+                    <div class="section-heading white text-left mb-50">
+                        <p>See what’s new</p>
+                        <h2>Testimonial</h2>
+                    </div>
+                    <!-- Testimonial Slide -->
+                    <div class="testimonials-slide owl-carousel">
+                        <!-- Single Slide -->
+                        <div class="single-slide">
+                            <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum.</p>
+                            <div class="testimonial-info d-flex align-items-center">
+                                <div class="testimonial-thumb">
+                                    <img src="img/bg-img/t1.jpg" alt="">
+                                </div>
+                                <p>William Smith, Customer</p>
+                            </div>
+                        </div>
+                        <!-- Single Slide -->
+                        <div class="single-slide">
+                            <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum.</p>
+                            <div class="testimonial-info d-flex align-items-center">
+                                <div class="testimonial-thumb">
+                                    <img src="img/bg-img/t1.jpg" alt="">
+                                </div>
+                                <p>Nazrul Islam, Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- ##### Newsletter & Testimonials Area End ##### -->
+
+
+
     <!-- ##### Contact Area Start ##### -->
     <section class="contact-area section-padding-0-100">
         <div class="container">
@@ -141,25 +207,26 @@
                     <!-- Contact Form Area -->
                     <div class="contact-form-area  wow fadeInUp" data-wow-delay="200ms">
                         <form id="contactform">
+                            @csrf
                             <div class="row">
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="name" placeholder="Name" required>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
-                                        <input type="email" class="form-control" id="email" placeholder="E-mail" required>
+                                        <input type="email" class="form-control" id="email" name="from" placeholder="E-mail" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject" required>
+                                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message" required></textarea>
+                                        <textarea name="message" class="form-control" name="message" id="message" cols="30" rows="10" placeholder="Message" required></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12 text-center">
@@ -175,6 +242,74 @@
     <!-- ##### Contact Area End ##### -->
 
 
+
+    <!--Script--->
+
+   <script>
+   $('#subscribeform').submit((e)=>{
+    e.preventDefault();
+    $("#loading").show()
+    let email = $('#email').val();
+    $.ajax({
+        type: 'POST',
+        data: {
+            email: email
+        },
+        url: '{{url('/api/newsletter/subcribe')}}',
+        success: (response)=>{
+            $("#loading").hide()
+            console.log(response)
+        if(response.status =="success"){
+        $('#subcribeform').trigger('reset');
+        toastr.success('Thank you for subscribing')
+        }
+        else{
+        toastr.warning(response.message)
+        }
+
+        },
+        error: (error)=>{
+            let errors = error.responseJSON.errors;
+                         $("#loading").hide()
+                         $.each(errors, (key, value)=>{
+                            window.msgs = value
+                         });
+                         toastr.error(window.msgs, 'Subcription Failed!')
+        }
+    })
+    //End of ajax
+    //End of form submit
+    })
+
+
+
+   $('#contactform').submit((e)=>{
+    e.preventDefault();
+    $("#loading").show()
+    let data = $('#contactform').serialize();
+    $.ajax({
+        type: 'POST',
+        data: data,
+        url: '{{url('/api/sendmail')}}',
+        success: (response)=>{
+        $('#contactform').trigger('reset');
+        $("#loading").hide()
+        toastr.success('I will get back to you shortly', 'Message sent!')
+        },
+        error: (error)=>{
+            let errors = error.responseJSON.errors;
+                         $("#loading").hide()
+                         $.each(errors, (key, value)=>{
+                            window.msgs = value
+                         });
+                         toastr.error(window.msgs, 'Message not sent')
+                         toastr.error('Could not connect!', 'Message not sent')
+        }
+    })
+    //End of ajax
+    //End of form submit
+    })
+    </script>
 @endsection
 
 

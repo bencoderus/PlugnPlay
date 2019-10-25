@@ -32,3 +32,8 @@ Route::post('music/update', 'AdminController@editmusic')->name("editmusic");
 Route::post('music/add', 'AdminController@addmusic')->name("addmusic");
 Route::post('music/delete', 'AdminController@deletemusic')->name("deletemusic");
 
+//Sendmail
+Route::post('/sendmail', 'PagesController@sendmail');
+
+//Subscribe to newletter
+Route::post('/newsletter/subcribe', 'PagesController@newsletter_subcribe');

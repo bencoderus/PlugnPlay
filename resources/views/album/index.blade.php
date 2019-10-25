@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-
+@section('title')
+Latest Albums
+@endsection
 
 @section('content')
 

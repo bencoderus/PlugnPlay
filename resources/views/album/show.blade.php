@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-
+@section('title')
+{{$album->name}}
+@endsection
 
 @section('content')
 
@@ -45,4 +47,9 @@
 
                 </div></div>
     </section></div>
-@endsection
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dac395226236a2b"></script>
+
+
+    @endsection

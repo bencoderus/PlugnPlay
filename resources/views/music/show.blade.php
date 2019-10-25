@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-
+@section('title')
+{{$song->title}}
+@endsection
 
 @section('content')
 
@@ -69,4 +71,8 @@
 
                 </div></div>
     </section></div>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dac395226236a2b"></script>
+
 @endsection
